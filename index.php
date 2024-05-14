@@ -56,7 +56,7 @@ $client_id = $config['client_id'];
 $client_secret = $config['client_secret'];
 $redirect_url = "$base_url/";
 $response_type = 'code';
-$scopes = array('student persistent');
+$scopes = array($config['scope'] . ' persistent');
 $claims = '';
 
 $oidc = new OpenIDConnectClient($oidc_op, $client_id, $client_secret);
@@ -73,14 +73,15 @@ if ($claims) $oidc->addAuthParam(array('claims' => $claims));
 
 $error = NULL;
 $action = $_POST['action'] ?? NULL;
-$code = $_REQUEST['code'] ?? NULL;
+$state = $_REQUEST['state'] ?? NULL;
 $sub = $_SESSION['sub'] ?? NULL;
 $me = $_REQUEST['me'] ?? NULL;
 
 $profile_link = $_POST['profile_link'] ?? $_SESSION['profile_link'] ?? NULL;
 $_SESSION['profile_link'] = $profile_link;
 
-if (($action || $code)) {
+if (($action || $state)) {
+  error_log("Auth");
   if (!$authenticated) {
     try {
         $oidc->authenticate();
