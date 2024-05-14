@@ -1,4 +1,5 @@
 <?php
+require 'config.php';
 require 'db.php';
 
 session_start();
@@ -27,7 +28,7 @@ $time = $dt->format('d-m-Y H:i:s T');
 
 echo "Last validation: $time<br>\n";
 
-$old = (time() - $timestamp > 60);
+$old = (time() - $timestamp > $config['refresh']);
 
 if (!$old) {
     echo "link: $profile_link<br>\n";
