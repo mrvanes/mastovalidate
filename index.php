@@ -15,6 +15,7 @@ function short($sub, $link = "") {
   $result = $db->querySingle($query, true) ?? array();
   $short = $result['short'] ?? NULL;
   $profile_link = $result['profile_link'] ?? NULL;
+  $link = $db->escapeString($link);
 
   if (!$short && $sub) {
     $success = False;
