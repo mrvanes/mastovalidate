@@ -9,7 +9,7 @@ use Jumbojett\OpenIDConnectClient;
 
 function short($sub, $link = "") {
   global $db;
-  $c = "bcdfghjklmnpqrstvwBCDFGHJKLMNPQRSTVW";
+  $c = "bcdfghjklmnpqrstvwBCDFGHJKLMNPQRSTVW0123456789";
 
   $query = "SELECT short, profile_link from users where sub = '$sub';";
   $result = $db->querySingle($query, true) ?? array();
