@@ -1,0 +1,13 @@
+DirectoryIndex index.php
+
+Header add Content-Security-Policy "default-src 'none'; style-src 'unsafe-inline'"
+
+RedirectMatch 404 /\.htaccess
+RedirectMatch 404 /\.git
+RedirectMatch 404 /vendor
+
+RewriteEngine On
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . me.php [L]
