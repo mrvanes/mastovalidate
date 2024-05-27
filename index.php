@@ -117,8 +117,9 @@ if ($me) {
 <?php
 if ($error) {
   echo "<pre id=result>$error</pre>\n";
-} else {
+} else if ($short ) {
   $me_url = "$base_url/$short";
+  echo "Copy this URL to your Mastodon profile page Extra Fields section<br>";
   echo "<a href=\"$me_url\" target=_blank>$me_url</a><br><br>\n";
 }
 
