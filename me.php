@@ -9,8 +9,11 @@ $me = substr($request_uri, 1);
 ?>
 <!DOCTYPE html>
 <html>
+<head>
+  <title>Validate</title>
+  <link rel="stylesheet" href="style.css">
+</head>
 <body>
-<h1>Me!</h1>
 
 <?php
 $query = "SELECT time, profile_link from users where short = '$me'";

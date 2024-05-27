@@ -110,9 +110,11 @@ if ($me) {
 ?>
 <!DOCTYPE html>
 <html>
-<head><title>Validate</title></head>
+<head>
+  <title>Validate</title>
+  <link rel="stylesheet" href="style.css">
+</head>
 <body>
-<h1>Validate</h1>
 
 <?php
 if ($error) {
