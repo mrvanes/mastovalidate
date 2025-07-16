@@ -1,6 +1,6 @@
 DirectoryIndex index.php
 
-Header add Content-Security-Policy "default-src 'self';"
+Header add Content-Security-Policy "default-src 'self' 'unsafe-inline';"
 
 RedirectMatch 404 /\.htaccess
 RedirectMatch 404 /\.git

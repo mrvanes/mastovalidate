@@ -1,0 +1,113 @@
+<html>
+<head>
+<title>InAcademia Validation</title>
+<link rel="icon" type="image/x-icon" href="favicon.ico">
+<style type="text/css">
+body {
+  font-family: sans-serif;
+  font-size: small;
+  background: #ffffff;
+  background-image: url(/images/triangle.svg);
+  background-repeat: no-repeat;
+  background-position: left top;
+  background-attachment: fixed;
+  background-size: 500pt;
+}
+
+div.header {
+  position: fixed;
+  top: 10pt;
+/*   border: 1px solid black; */
+  color: white;
+
+}
+
+.header img {
+  width: 50pt;
+  vertical-align: middle;
+}
+
+div.sidebar {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  width: 140pt;
+  position: fixed;
+  bottom: 10pt;
+/*   border: 1px solid black; */
+  text-align: right;
+}
+
+div.content {
+  margin: 200pt 0 0 200pt;
+}
+
+@media only screen and (max-width: 600px) {
+  div.content {
+    margin: 200pt 0 0 0;
+  }
+}
+
+p {
+  margin: 4pt;
+}
+
+.input {
+  font-size: 12pt;
+  width: 75%;
+
+}
+
+.button {
+  background-color: #04AA6D;
+  border: none;
+  color: white;
+  padding: 4pt 8pt;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 12pt;
+  margin: 4pt 2pt;
+  border-radius: 8pt;
+}
+
+.button:hover {
+  background-color: #008A3D;
+
+}
+
+</style>
+</head>
+
+<body>
+<div class='header'>
+<h1><img src='/images/mortarboard_white.svg'> InAcademia</h1>
+</div>
+
+<div class='content'>
+<h1>Mastodon Validation</h1>
+<p>This is bodytext paragraph</p>
+<form>
+<input class="input" type=text placeholder='<a rel="me" href="https://social.edu.nl/@profile">Mastodon</a>'></input>
+<input type=submit class=button name=action value=validate>
+</form>
+
+<p>This is bodytext paragraph</p>
+<ul>
+<li>First item
+<li>Second item
+<li>Third item
+</ul>
+
+</div>
+
+<div class='sidebar'>
+<h2>EU logo</h2>
+<p>
+  Disclaimer<br>
+  ©2025
+</p>
+</div>
+
+</body>
+</html>
