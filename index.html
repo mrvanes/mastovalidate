@@ -2,6 +2,7 @@
 <head>
 <title>InAcademia Validation</title>
 <link rel="icon" type="image/x-icon" href="favicon.ico">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <style type="text/css">
 body {
   font-family: sans-serif;
@@ -19,7 +20,6 @@ div.header {
   top: 10pt;
 /*   border: 1px solid black; */
   color: white;
-
 }
 
 .header img {
@@ -42,9 +42,9 @@ div.content {
   margin: 200pt 0 0 200pt;
 }
 
-@media only screen and (max-width: 600px) {
+@media (max-width: 600px) {
   div.content {
-    margin: 200pt 0 0 0;
+    margin: 200pt 0 0 20pt;
   }
 }
 
@@ -88,7 +88,7 @@ p {
 <h1>Mastodon Validation</h1>
 <p>This is bodytext paragraph</p>
 <form>
-<input class="input" type=text placeholder='<a rel="me" href="https://social.edu.nl/@profile">Mastodon</a>'></input>
+<input class="input" type=text placeholder='<a rel="me" href="https://social.edu.nl/@profile">Mastodon</a>'>
 <input type=submit class=button name=action value=validate>
 </form>
 
