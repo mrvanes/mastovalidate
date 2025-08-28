@@ -1,7 +1,4 @@
-<div align=center>
-    <p>Paste the Mastodon rel="me" link below</p>
-    <form action=/ method=POST>
-    <input type=text name=profile_link value="<?=htmlspecialchars($profile_link)?>" size=80 placeholder="<a rel=&quot;me&quot; href=&quot;https://social.edu.nl/@user&quot;>Mastodon</a>"><br><br>
-    <input type=submit name=action value=validate>
-    </form>
-</div>
+<form action=/ method=POST>
+    <input class=input type=text name=profile_link size=80 placeholder='<a rel="me" href="https://social.edu.nl/@profile">Mastodon</a>' value="<?=htmlspecialchars($profile_link)?>">
+    <input type=submit class=button name=action value="VALIDATE LINK">
+</form>

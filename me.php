@@ -3,21 +3,12 @@ require 'config.php';
 require 'db.php';
 
 session_start();
+
 $authenticated = $_SESSION['authenticated'] ?? False;
 $request_uri = $_SERVER['REQUEST_URI'];
 $me = substr($request_uri, 1);
-?>
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Validate</title>
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
 
-<?php
 $query = "SELECT time, profile_link from users where short = '$me'";
-
 $result = $db->querySingle($query, true);
 if (!$result) exit();
 
@@ -28,21 +19,47 @@ $date = date('d-m-Y H:i:s', $timestamp);
 $dt = new DateTime($date, new DateTimeZone('GMT'));
 $dt->setTimeZone(new DateTimeZone('CEST'));
 $time = $dt->format('d-m-Y H:i:s T');
-
-echo "Last validation: $time<br>\n";
-
 $old = (time() - $timestamp > $config['refresh']);
 
-if (!$old) {
-    echo "link: $profile_link<br>\n";
-} else {
-    if ($authenticated) {
-        echo "Please revalidate!<br>\n";
-        require 'form.php';
-    } else {
-        echo "Please <a href=\"/?me=$me\" target=_blank>revalidate!</a><br>\n";
-    }
-}
 ?>
+<!DOCTYPE html>
+<html>
+<head>
+  <title>InAcademia Validation</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="style/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
+  <script src="scripts/copy.js" defer></script>
+</head>
+<body>
+
+<body>
+
+<div class='header'></div>
+  <div class='content'>
+
+  <?php
+  echo "Last validation: $time<br>\n";
+  if (!$old) {
+    echo "link: $profile_link<br>\n";
+  } else {
+    unset($_SESSION['authenticated']);
+    echo "Please <a href=\"/?me=$me\">revalidate!</a><br>\n";
+  }
+  ?>
+  </div>
+
+  <div class='sidebar'>
+    <img src="/images/geant_logo.svg"><br>
+    <img src="/images/eu_flag.svg"><br>
+    <p>
+      <b>How does InAcademia work?</b><br>
+      <a href="https://inacademia.org">Click here</a> to find out more
+    </p>
+  </div>
+
 </body>
 </html>
