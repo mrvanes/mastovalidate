@@ -22,11 +22,9 @@ function short($sub, $link = "") {
     }
   }
 
-  if ($link) {
-    $link = $db->escapeString($link);
-    $query = "UPDATE users SET profile_link='$link', time=strftime('%s', 'now') WHERE sub = '$sub';";
-    if ($db->query($query)) $profile_link = $link;
-  }
+  $link = $db->escapeString($link);
+  $query = "UPDATE users SET profile_link='$link', time=strftime('%s', 'now') WHERE sub = '$sub';";
+  if ($db->query($query)) $profile_link = $link;
 
   return [$short, $profile_link];
 }

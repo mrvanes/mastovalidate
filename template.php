@@ -23,6 +23,7 @@
       $me_url = "$base_url/$short";
       echo "<p>Copy this URL to your Mastodon profile page Extra Fields section</p>";
       echo "<h2><a href=\"$me_url\" target=_blank id=me_url>$me_url</a> <img src=\"images/clipboard.svg\" onclick=\"Copy()\" height=20></h2>\n";
+      echo "<a href=\"/?state=logout\">logout</a>\n";
     } else { // Main page
     if ($short) {
       echo "You are validated, but you haven't registered a Mastodon rel=\"me\" link yet.<br>\n";

@@ -39,6 +39,12 @@ $state = $_REQUEST['state'] ?? NULL;
 $sub = $_SESSION['sub'] ?? NULL;
 $me = $_REQUEST['me'] ?? NULL;
 
+if ($state == 'logout') {
+  session_destroy();
+  header("Location: " . $base_url . "/");
+  exit();
+}
+
 $profile_link = $_POST['profile_link'] ?? $_SESSION['profile_link'] ?? NULL;
 $_SESSION['profile_link'] = $profile_link;
 
@@ -59,14 +65,14 @@ if ($action || $state || $me) {
         $_SESSION['sub'] = $sub;
         $_SESSION['authenticated'] = True;
         header("Location: " . $base_url . "/");
+        exit();
     } catch (Exception $e) {
         $error = htmlspecialchars(json_encode($e->getMessage(), JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
     }
   }
-  [$short, $profile_link] = short($sub, $profile_link);
-} else {
-  [$short, $profile_link] = short($sub);
 }
+
+[$short, $profile_link] = short($sub, $profile_link);
 
 $_SESSION['profile_link'] = $profile_link;
 $_SESSION['short'] = $short;
