@@ -1,19 +1,27 @@
 <?php
 require 'config.php';
 require 'db.php';
+require 'validate.php';
 
 session_start();
 
-$authenticated = $_SESSION['authenticated'] ?? False;
+// $authenticated = $_SESSION['authenticated'] ?? False;
 $request_uri = $_SERVER['REQUEST_URI'];
 $me = substr($request_uri, 1);
 
-$query = "SELECT time, profile_link from users where short = '$me'";
-$result = $db->querySingle($query, true);
-if (!$result) exit();
+[$profile_link, $timestamp] = profile_link($me);
 
-$timestamp = $result['time'];
-$profile_link = $result['profile_link'];
+// $query = "SELECT time, profile_link from users where short = '$me'";
+// $result = $db->querySingle($query, true);
+// if (!$result) exit();
+
+// $timestamp = $result['time'];
+// $profile_link = $result['profile_link'];
+
+if (!$profile_link) {
+  http_response_code(404);
+  exit();
+}
 
 $date = date('d-m-Y H:i:s', $timestamp);
 $dt = new DateTime($date, new DateTimeZone('GMT'));

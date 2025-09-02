@@ -9,8 +9,6 @@ require 'config.php';
 require 'db.php';
 require 'validate.php';
 
-
-$authenticated = $_SESSION['authenticated'] ?? False;
 $base_url = $_SERVER['REQUEST_SCHEME'] . "://" . $_SERVER['SERVER_NAME'];
 
 $oidc_op = $config['oidc_op'];
@@ -37,7 +35,9 @@ $error = NULL;
 $action = $_POST['action'] ?? NULL;
 $state = $_REQUEST['state'] ?? NULL;
 $sub = $_SESSION['sub'] ?? NULL;
-$me = $_REQUEST['me'] ?? NULL;
+$me = $_REQUEST['me'] ?? $_SESSION['me'] ?? NULL;
+$short = NULL;
+$old = NULL;
 
 if ($state == 'logout') {
   session_destroy();
@@ -45,25 +45,29 @@ if ($state == 'logout') {
   exit();
 }
 
-$profile_link = $_POST['profile_link'] ?? $_SESSION['profile_link'] ?? NULL;
-$_SESSION['profile_link'] = $profile_link;
-
+// Get profile_link from me, form or session
 if ($me) {
-  [$short, $profile_link] = me($me);
+  [$profile_link, $time] = profile_link($me);
+  $_SESSION['me'] = $me;
 } else {
-  $short = $_SESSION['short'] ?? NULL;
+  $profile_link = $_POST['profile_link'] ?? $_SESSION['profile_link'] ?? NULL;
 }
 
+$_SESSION['profile_link'] = $profile_link;
+
+
+// @error_log("me A: $me");
+// @error_log("sub A: $sub");
+// @error_log("profie_link A: $profile_link");
+
 if ($action || $state || $me) {
-  if (!$authenticated) {
-    error_log("Auth");
+  if (!$sub) {
     try {
         $oidc->authenticate();
         $claims = $oidc->getVerifiedClaims();
         $userinfo = $oidc->requestUserInfo();
-        $sub = $userinfo->sub ?? 'me';
+        $sub = $userinfo->sub ?? NULL;
         $_SESSION['sub'] = $sub;
-        $_SESSION['authenticated'] = True;
         header("Location: " . $base_url . "/");
         exit();
     } catch (Exception $e) {
@@ -72,9 +76,32 @@ if ($action || $state || $me) {
   }
 }
 
-[$short, $profile_link] = short($sub, $profile_link);
+// @error_log("me B: $me");
+// @error_log("sub B: $sub");
+// @error_log("profie_link B: $profile_link");
 
-$_SESSION['profile_link'] = $profile_link;
-$_SESSION['short'] = $short;
+if ($sub) {
+  $short = short($sub);
+
+  if ($me && $short != $me) {
+    $profile_link = NULL;
+    unset($_SESSION['me']);
+  }
+
+  [$profile_link, $timestamp] = profile_link($short, $profile_link);
+  unset($_SESSION['profile_link']);
+
+  $date = date('d-m-Y H:i:s', $timestamp);
+  $dt = new DateTime($date, new DateTimeZone('GMT'));
+  $dt->setTimeZone(new DateTimeZone('CEST'));
+  $time = $dt->format('d-m-Y H:i:s T');
+  $old = (time() - $timestamp > $config['refresh']);
+}
+
+
+// @error_log("me C: $me");
+// @error_log("sub C: $sub");
+// @error_log("profie_link C: $profile_link");
+
 
 require 'template.php';
