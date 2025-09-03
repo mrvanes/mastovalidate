@@ -77,6 +77,7 @@ if ($r == 1 && count($matches) == 2) {
         "id": "'.$validation_url.'#me",
         "type": "Person",
         "mastodon": "'.$url.'",
+        "based_near": "http://dbpedia.org/resource/Netherlands",
         "modified": "'.$zulu.'"
     }
 }
