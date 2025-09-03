@@ -27,7 +27,20 @@ $date = date('d-m-Y H:i:s', $timestamp);
 $dt = new DateTime($date, new DateTimeZone('GMT'));
 $dt->setTimeZone(new DateTimeZone('CEST'));
 $time = $dt->format('d-m-Y H:i:s T');
+$zulu = $dt->format('Y-m-d\TH:i:s\Z');
 $old = (time() - $timestamp > $config['refresh']);
+
+$base_url = $_SERVER['REQUEST_SCHEME'] . "://" . $_SERVER['SERVER_NAME'];
+$validation_url = "$base_url/$me";
+
+// Some regex matching on the rel="me" link
+$url = Null;
+$matches = Null;
+$r = preg_match('/^<a .+href=[\'"](.+)[\'"]>/', $profile_link, $matches);
+
+if ($r == 1 && count($matches) == 2) {
+  $url = $matches[1];
+}
 
 ?>
 <!DOCTYPE html>
@@ -35,6 +48,7 @@ $old = (time() - $timestamp > $config['refresh']);
 <head>
   <title>InAcademia Validation</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+  <link rel="me" href="<?=$url?>">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -53,6 +67,20 @@ $old = (time() - $timestamp > $config['refresh']);
   echo "Last validation: $time<br>\n";
   if (!$old) {
     echo "link: $profile_link<br>\n";
+    echo '
+<script type="application/ld+json" id="data">
+{
+    "@context": "https://labs.eventnotifications.net/contexts/profile.jsonld",
+    "id": "'.$validation_url.'",
+    "type": "PersonalProfileDocument",
+    "primaryTopic": {
+        "id": "'.$validation_url.'#me",
+        "type": "Person",
+        "mastodon": "'.$url.'",
+        "modified": "'.$zulu.'"
+    }
+}
+</script>';
   } else {
     unset($_SESSION['authenticated']);
     echo "Please <a href=\"/?me=$me\">revalidate!</a><br>\n";

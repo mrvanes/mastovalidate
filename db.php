@@ -1,5 +1,5 @@
 <?php
-if ($_GET['reset']) {
+if (isset($_GET['reset'])) {
   unlink('db/mastodon.db');
 }
 $db = new SQLite3('db/mastodon.db');
