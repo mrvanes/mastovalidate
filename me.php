@@ -33,22 +33,13 @@ $old = (time() - $timestamp > $config['refresh']);
 $base_url = $_SERVER['REQUEST_SCHEME'] . "://" . $_SERVER['SERVER_NAME'];
 $validation_url = "$base_url/$me";
 
-// Some regex matching on the rel="me" link
-$url = Null;
-$matches = Null;
-$r = preg_match('/^<a .+href=[\'"](.+)[\'"]>/', $profile_link, $matches);
-
-if ($r == 1 && count($matches) == 2) {
-  $url = $matches[1];
-}
-
 ?>
 <!DOCTYPE html>
 <html>
 <head>
   <title>InAcademia Validation</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
-  <link rel="me" href="<?=$url?>">
+  <link rel="me" href="<?=$profile_link?>">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -66,7 +57,7 @@ if ($r == 1 && count($matches) == 2) {
   <?php
   echo "Last validation: $time<br>\n";
   if (!$old) {
-    echo "link: $profile_link<br>\n";
+    echo "link: <a href=\"$profile_link\" target=_blank>$profile_link</a><br>\n";
     echo '
 <script type="application/ld+json" id="data">
 {
@@ -76,7 +67,7 @@ if ($r == 1 && count($matches) == 2) {
     "primaryTopic": {
         "id": "'.$validation_url.'#me",
         "type": "Person",
-        "mastodon": "'.$url.'",
+        "mastodon": "'.$profile_link.'",
         "based_near": "http://dbpedia.org/resource/Netherlands",
         "modified": "'.$zulu.'"
     }

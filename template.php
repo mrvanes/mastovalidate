@@ -29,11 +29,12 @@
       echo "You are validated, but you haven't registered a Mastodon rel=\"me\" link yet or your link needs revalidation.<br>\n";
     }?>
 
-    <h1>Paste the Mastodon rel="me" link below</h1>
+    <h1>Paste your Mastodon link below</h1>
 
-    <?php
-      require 'form.php';
-    ?>
+    <form action=/ method=POST>
+        <input class=input type=text name=profile_link size=80 placeholder='https://social.edu.nl/@profile' value="<?=htmlspecialchars($profile_link)?>">
+        <input type=submit class=button name=action value="VALIDATE LINK">
+    </form>
 
     <p><b>You can verify your Mastodon account here if:</b></p>
     <ul>
@@ -41,7 +42,7 @@
       <li>Your institution's identity provider releases the 'faculty' attribute
     </ul>
     <br>
-    <p><b>Paste the Mastodon rel="me" link below and hit the Validate button, then:</b></p>
+    <p><b>Paste your Mastodon link above and hit the Validate button, then:</b></p>
     <ul>
       <li>Select your institution from the list on the next page and enter your login credentials
       <li>If you can't find your institution, or if you cannot authenticate, please contact the department at your institution that is responsible for provisioning user accounts.

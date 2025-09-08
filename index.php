@@ -50,7 +50,20 @@ if ($me) {
   [$profile_link, $time] = profile_link($me);
   $_SESSION['me'] = $me;
 } else {
-  $profile_link = $_POST['profile_link'] ?? $_SESSION['profile_link'] ?? NULL;
+  if (isset($_POST['profile_link'])) {
+    $profile_link = $_POST['profile_link'];
+
+    // Some regex matching on the rel="me" link
+    $url = Null;
+    $matches = Null;
+    $r = preg_match('/^<a .+href=[\'"](.+)[\'"]>/', $profile_link, $matches);
+
+    if ($r == 1 && count($matches) == 2) {
+      $profile_link = $matches[1];
+    }
+  } else {
+    $profile_link = $_SESSION['profile_link'] ?? NULL;
+  }
 }
 
 $_SESSION['profile_link'] = $profile_link;
@@ -102,6 +115,5 @@ if ($sub) {
 // @error_log("me C: $me");
 // @error_log("sub C: $sub");
 // @error_log("profie_link C: $profile_link");
-
 
 require 'template.php';
